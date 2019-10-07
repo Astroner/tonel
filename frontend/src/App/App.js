@@ -1,10 +1,11 @@
 import React from 'react';
-import { Router, Route } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import { history } from '../_helpers/'
 import { HomePage } from '../HomePage/'
 import { HeaderMenu } from '../HeaderMenu/'
+import { EmptyPage } from '../EmptyPage/'
 
 const theme = createMuiTheme({});
 
@@ -13,7 +14,7 @@ export class App extends React.Component{
 		super(props);
 		this.state = {
 			routes: [
-				{ label: "Home", path: "/", component: HomePage }
+				{ label: "Home", path: "/proxy-control", component: HomePage, exact: true }
 			]
 		}
 	}
@@ -21,10 +22,13 @@ export class App extends React.Component{
 		return(
 			<MuiThemeProvider theme={theme}>
 				<Router history={history}>
-					<HeaderMenu active={history.location.pathname} routes={this.state.routes}/>
-					{this.state.routes.map((item, i) => (
-						<Route key={i} {...item}/>
-					))}
+					<HeaderMenu routes = {this.state.routes}/>
+					<Switch>
+						{this.state.routes.map((item, i) => (
+							<Route key={i} {...item}/>
+						))}
+						<Route component = {EmptyPage}/>
+					</Switch>
 				</Router>
 			</MuiThemeProvider>
 		)

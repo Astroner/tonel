@@ -7,10 +7,14 @@ exports.request = ({ path, method, body, success, error, headers })=>{
 		method,
 		port: 443,
 		headers: {
-			'Content-Type': 'application/json',
-			authorization: headers.authorization,
-			'Content-Length': body ? JSON.stringify(body).length : undefined
+			'Content-Type': 'application/json'
 		}
+	}
+	if (headers.authorization!==undefined) {
+		options.headers.authorization = headers.authorization
+	}
+	if (Object.keys(body).length) {
+		options.headers['Content-Length'] =JSON.stringify(body).length;
 	}
 	let httpReq = https.request(options, yolo=>{
 		let data = "";
@@ -18,13 +22,13 @@ exports.request = ({ path, method, body, success, error, headers })=>{
 			data+=chunk;
 		})
 		yolo.on('end', e=>{
-			success(data)
+			success(yolo.statusCode, data)
 		})
 	})
 	httpReq.on("error", (err) => {
 		error(err)
 	});
-	if (body) {
+	if (Object.keys(body).length) {
 		httpReq.write(JSON.stringify(body));
 	}
 	httpReq.end();
