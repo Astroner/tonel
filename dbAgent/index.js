@@ -1,3 +1,4 @@
 module.exports = {
-	...require('./dbAgent.js')
+	...require('./dbAgent.js'),
+	actions: {...require('./Actions/index.js')}
 }

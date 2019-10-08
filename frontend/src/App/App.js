@@ -6,6 +6,7 @@ import { history } from '../_helpers/'
 import { HomePage } from '../HomePage/'
 import { HeaderMenu } from '../HeaderMenu/'
 import { EmptyPage } from '../EmptyPage/'
+import { NewUrl } from '../NewUrl/'
 
 const theme = createMuiTheme({});
 
@@ -14,7 +15,8 @@ export class App extends React.Component{
 		super(props);
 		this.state = {
 			routes: [
-				{ label: "Home", path: "/proxy-control", component: HomePage, exact: true }
+				{ label: "Home", path: "/proxy-control", component: HomePage, exact: true },
+				{ label: "New Url", path: "/newurl", component: NewUrl, ignored: true }
 			]
 		}
 	}

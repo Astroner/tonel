@@ -1,7 +1,9 @@
+const AddNewUrl = require('./AddNewUrl.js')
+
 exports.posts = (url, query, urlParams, body, response) => {
 	switch (url) {
-		case "/add-new-url/":
-			return response.status(200).send(JSON.stringify({ detail: "Successfully!" }))
+		case "/proxy-api/add-new-url/":
+			return AddNewUrl(body, response)
 		default:
 			return response.status(404).send(JSON.stringify({ detail: 'Can not post information' }))
 	}

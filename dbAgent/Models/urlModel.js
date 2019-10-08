@@ -1,11 +1,12 @@
 const mg = require('mongoose');
 
 const urlSchema = new mg.Schema({
-	url: String,
-	disabled: Boolean,
-	disableCode: Number,
-	mustBeSaved: Boolean,
-	lastResponse: String
+	url: { type: String, required: true },
+	method: { type: String, required: true },
+	disabled: { type: Boolean, default: false },
+	disableCode: { type: Number, default: null },
+	mustBeSaved: { type: Boolean, default: false },
+	lastResponse: { type: String, default: null }
 })
 
 urlSchema.methods.disable = function disable(code) {
@@ -19,4 +20,4 @@ urlSchema.methods.enable = function enable() {
 
 const url = mg.model("url", urlSchema);
 
-module.exports.url = url;
+exports.url = url;

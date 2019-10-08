@@ -6,7 +6,7 @@ export class HeaderMenu extends React.Component {
 	render(){
 		return(
 			<div className = "header_menu">
-				{this.props.routes.map((item, i) => (
+				{this.props.routes.map((item, i) => !item.ignored ? (
 					<Button 
 						variant={item.path===window.location.pathname ||
 								 item.path + "/"===window.location.pathname ? "contained" : "text"} 
@@ -18,7 +18,7 @@ export class HeaderMenu extends React.Component {
 					>
 						{item.label}
 					</Button>
-				))}
+				) : null)}
 			</div>
 		)
 	}

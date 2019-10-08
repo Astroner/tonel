@@ -8,5 +8,5 @@ import sts from './Styles.js'
 import { store } from './_helpers/'
 
 document.head.appendChild(document.createElement('style')).innerHTML = Style(sts).parse();
-
+window.gety = store.getState;
 render(<Provider store={store} ><App /></Provider>, document.querySelector("#root"))
