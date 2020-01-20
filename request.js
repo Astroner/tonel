@@ -1,7 +1,8 @@
 const https = require('https');
+const axios = require("axios")
 
 exports.request = ({ path, method, body, success, error, headers })=>{
-	const options = {
+	/*const options = {
 		hostname: 'api.dev.yoloco.ru',
 		path,
 		method,
@@ -9,14 +10,24 @@ exports.request = ({ path, method, body, success, error, headers })=>{
 		headers: {
 			'Content-Type': 'application/json'
 		}
+	}*/
+	const AXIOS = {
+		baseURL: `https://api.yolotech.ru/`,
+		url: path,
+		method,
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		data: body
 	}
 	if (headers.authorization!==undefined) {
-		options.headers.authorization = headers.authorization
+		AXIOS.headers.authorization = headers.authorization
 	}
-	if (Object.keys(body).length) {
-		options.headers['Content-Length'] =JSON.stringify(body).length;
-	}
-	let httpReq = https.request(options, yolo=>{
+	axios.request(AXIOS)
+		.then(_resp => success(_resp.status, _resp))
+		.catch(_err => error(_err.response ? _err.response.status : 404, _err))
+
+	/*let httpReq = https.request(options, yolo=>{
 		let data = "";
 		yolo.on('data', chunk=>{
 			data+=chunk;
@@ -31,5 +42,5 @@ exports.request = ({ path, method, body, success, error, headers })=>{
 	if (Object.keys(body).length) {
 		httpReq.write(JSON.stringify(body));
 	}
-	httpReq.end();
+	httpReq.end();*/
 }

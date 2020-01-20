@@ -3,7 +3,7 @@ import axios from 'axios'
 class APIService{
 	constructor(props){
 		this.__axios = axios.create({
-			baseURL: props.baseURL ? props.baseURL : process.env.REACT_APP_API_DOMAIN,
+			baseURL: props.baseURL ? props.baseURL : window.location.origin + "/proxy-api",
             headers: {
             	"Content-Type": "application/json"
             }

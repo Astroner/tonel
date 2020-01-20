@@ -5,8 +5,7 @@ const urlSchema = new mg.Schema({
 	method: { type: String, required: true },
 	disabled: { type: Boolean, default: false },
 	disableCode: { type: Number, default: null },
-	mustBeSaved: { type: Boolean, default: false },
-	lastResponse: { type: String, default: null }
+	date: { type: Date, default: Date.now }
 })
 
 urlSchema.methods.disable = function disable(code) {

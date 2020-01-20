@@ -4,10 +4,25 @@ import {
 	Input,
 	FormControl,
 	InputLabel,
-	Button
+	Button,
+	withStyles
 } from '@material-ui/core'
 
-import methColors from '../methColors.js'
+import { combineHOC } from '../_helpers/'
+import { Address } from '../_components/'
+
+const style = theme => ({
+	root: {
+		padding: 10,
+		"& h2": {
+			fontSize: 30, 
+			color: "#2a2a31"
+		}
+	},
+	forms: {
+		marginBottom: 20
+	}
+})
 
 class NewUrl extends React.Component {
 	constructor(props){
@@ -37,26 +52,13 @@ class NewUrl extends React.Component {
 		}))
 	}
 	render(){
+		const { classes } = this.props;
 		return (
-			<div className = "new_url" >
+			<div className = {classes.root} >
 				<h2>New route creating</h2>
-				<div className="resultier">
-					<div 
-						className="method"
-						style = {{
-							border: !this.state.method.value ? "1px solid #2a2a31": undefined,
-							background: this.state.method.value ? methColors(this.state.method.value.toUpperCase()) : undefined
-						}}
-					>
-						{this.state.method.value || "METH"}
-					</div>
-					<div className="url">
-						{this.state.baseURL.value ? `/${this.state.baseURL.value}/` : 
-						<span style ={{ color: "#BFBFBF" }} >/basePath/</span>}
-					</div>
-				</div>
-				<div className="forms">
-					<div className="mains">
+				<Address method = {this.state.method.value} url = {this.state.baseURL.value}/>
+				<div className = {classes["forms"]}>
+					<div>
 						<FormControl style = {{ marginRight: 10 }} >
 							<InputLabel>Method</InputLabel>
 							<Input 
@@ -81,30 +83,9 @@ class NewUrl extends React.Component {
 	}
 }
 
-export const _NewUrl = {
-	$p: 10,
-	h2: {
-		$sc: "30, #2a2a31"
-	},
-	".resultier": {
-		$g: "#fff",
-		boxShadow: "0 4 10 rgba(0,0,0,0.3)",
-		$r: 10,
-		$p: 10,
-		"$d-fm/b": "10px",
-		'.method': {
-			$w: "100px",
-			"$d-fa-c": "A",
-			$p: 10,
-			$m: "-10 10 -10 -10",
-			$r: "10 0 0 10"
-		}
-	},
-	".forms": {
-		"$m/b": "20px"
-	}
-}
-
-NewUrl = connect()(NewUrl);
+NewUrl = combineHOC(
+	c => withStyles(style)(c),
+	c => connect()(c)
+)(NewUrl)
 
 export { NewUrl }

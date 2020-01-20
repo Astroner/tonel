@@ -1,10 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Button } from '@material-ui/core'
+import { Button, withStyles } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 
 import { actions } from './Model/'
-import { UrlItem, _UrlItem } from './UrlItem.js'
+import { UrlItem } from './UrlItem.js'
+
+const style = theme => ({
+	root: {
+		padding: 20
+	},
+	hat: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		marginBottom: 10
+	},
+	buttons: {
+		display: 'flex',
+		alignItems: 'center'
+	}
+})
 
 export class HomePage extends React.Component{
 	constructor(props){
@@ -19,11 +35,11 @@ export class HomePage extends React.Component{
 		this.props.dispatch(actions.getUrls())	
 	}
 	render(){
-		const { store } = this.props;
+		const { store, classes } = this.props;
 		return(
-			<div className="home_page">
-				<div className="hat">
-					<div className="buttons">
+			<div className = {classes.root}>
+				<div className = {classes["hat"]}>
+					<div className = {classes["buttons"]}>
 						<Button
 							variant = "contained"
 							style = {{ marginRight: 10 }}
@@ -66,17 +82,8 @@ export class HomePage extends React.Component{
 	}
 }
 
-export const _HomePage = {
-	$p: 20,
-	".url_item": _UrlItem,
-	".hat": {
-		"$d-fj-ba-cm/b": "10px",
-		".buttons": {
-			"$d-fa-c": "A"
-		}
-	}
-}
-
 HomePage = connect(
 	({ homePage }) => ({ store: homePage })
 )(HomePage);
+
+HomePage = withStyles(style)(HomePage)

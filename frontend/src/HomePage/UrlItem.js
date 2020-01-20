@@ -1,33 +1,57 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { IconButton } from '@material-ui/core'
+import { IconButton, withStyles } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 
 import ErrorOutline from '@material-ui/icons/ErrorOutline'
+import SettingsApplications from '@material-ui/icons/SettingsApplications'
 
 import { actions } from './Model/'
-import methColors from '../methColors.js'
 
-let UrlItem = props => (
-	<div 
-		className="url_item"
-		style = {{
-			opacity: props.disabled ? .4 : 1
-		}}
-	>
-		<div className="url">
+const style = ({ methods }) => ({
+	root: {
+		background: "#fff",
+		boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+		borderRadius: 10,
+		padding: 10,
+		marginBottom: 10,
+		display: 'flex',
+		justifyContent: 'space-between',
+		opacity: ({ disabled }) => disabled ? .4 : 1,
+		transition: "opacity .3s"
+	},
+	url: {
+		margin: "-10px 0 -10px -10px",
+		borderRadius: "10px 0 0 10px",
+		overflow: "hidden",
+		display: "flex"
+	},
+	method: {
+		width: "100px",
+		display: "flex",
+		alignItems: 'center',
+		padding: 10,
+		marginRight: "10px",
+		background: ({ method }) => methods[method] ? methods[method] : methods["default"]
+	},
+	path: {
+		padding: "10px 0"
+	}
+})
+
+let UrlItem = ({ classes, ...props}) => (
+	<div className = {classes.root} >
+		<div className = {classes.url}>
 			<div 
-				className="method"
-				style = {{
-					background: methColors(props.method)
-				}}
+				className={classes["method"]}
 			>
 				{props.method}
 			</div>
-			<div className="path">
+			<div className = {classes["path"]}>
 				{props.url}
 			</div>
 		</div>
-		<div className="actions">
+		<div>
 			<IconButton 
 				onClick = {!props.disabled ? 
 					e=>props.dispatch(actions.disableUrl(props.url, props.index)) : 
@@ -42,34 +66,22 @@ let UrlItem = props => (
 					}}
 				/>
 			</IconButton>
+			<IconButton 
+				size="small"
+				component = {Link}
+				to = {`/url_settings/?method=${props.method}&url=${props.url}`} 
+			>
+				<SettingsApplications 
+					fontSize = "small"
+					style = {{
+						color: props.disabled ? "#E83737" : undefined
+					}}
+				/>
+			</IconButton>
 		</div>
 	</div>
 )
 
-export const _UrlItem = {
-	$g: "#fff",
-	boxShadow: "0 4 10 rgba(0,0,0,0.3)",
-	$r: 10,
-	$p: 10,
-	opacity: ["initial", .3],
-	"$m/b": "10px",
-	"$d-fj-b": "A",
-	".url": {
-		$m: "-10 0 -10 -10",
-		$r: "10 0 0 10",
-		overflow: "hidden",
-		$d: "flex",
-		'.method': {
-			$w: "100px",
-			"$d-fa-c": "A",
-			$p: 10,
-			"$m/r": "10px"
-		},
-		".path": {
-			$p: "10 0"
-		}
-	}
-}
-UrlItem = connect()(UrlItem)
+UrlItem = withStyles(style)(connect()(UrlItem))
 
 export { UrlItem }
